@@ -28,7 +28,8 @@
     projectile
     volatile-highlights
     undo-tree
-    zygospore))
+    zygospore
+    magit))
 
 (defun install-packages ()
   "Install all required packages."
@@ -52,6 +53,7 @@
 ;; (require 'setup-ggtags)
 (require 'setup-cedet)
 (require 'setup-editing)
+(require 'setup-magit)
 
 (windmove-default-keybindings)
 
