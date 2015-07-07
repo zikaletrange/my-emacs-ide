@@ -221,7 +221,7 @@
 ;;YCM server
 (require 'ycmd)
 (ycmd-setup)
-(set-variable 'ycmd-server-command '("python" "/home/zika/ycmd/ycmd/"))
+(set-variable 'ycmd-server-command '("python" "${HOME}/ycmd/ycmd/"))
 ;;(set-variable 'ycmd-extra-conf-whitelist '("~/gem5/*"))
 (set-variable 'ycmd-request-message-level -1)
 (set-variable 'url-show-status nil)
