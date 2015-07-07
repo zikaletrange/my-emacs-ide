@@ -5,25 +5,43 @@
 
 (setq gc-cons-threshold 100000000)
 (setq inhibit-startup-message t)
+(setq plugin-path "~/.emacs.d/elpa/")
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (defconst demo-packages
   '(anzu
+    auctex
+    auto-complete
+    ein
+    matlab-mode
+    pydoc-info
+    popup
+    jedi
+    nyan-mode
+    clang-format
+    google-c-style
+    flycheck-google-cpplint
+    flymake-google-cpplint
+    helm-descbinds
+    color-theme-solarized
     company
+    company-ycmd
     duplicate-thing
     ggtags
     helm
     helm-gtags
     helm-projectile
     helm-swoop
-    ;; function-args
+    function-args
     clean-aindent-mode
     comment-dwim-2
     dtrt-indent
     ws-butler
     iedit
     yasnippet
+    ycmd
+    flycheck-ycmd
     smartparens
     projectile
     volatile-highlights
@@ -54,6 +72,8 @@
 (require 'setup-cedet)
 (require 'setup-editing)
 (require 'setup-magit)
+(require 'setup-functions)
+;; (require 'setup-custom)
 
 (windmove-default-keybindings)
 
@@ -62,6 +82,12 @@
 ;; (fa-config-default)
 ;; (define-key c-mode-map  [(tab)] 'company-complete)
 ;; (define-key c++-mode-map  [(tab)] 'company-complete)
+(require 'function-args)
+(fa-config-default)
+(define-key c-mode-map  [(control tab)] 'moo-complete)
+(define-key c++-mode-map  [(control tab)] 'moo-complete)
+(define-key c-mode-map (kbd "M-o")  'fa-show)
+(define-key c++-mode-map (kbd "M-o")  'fa-show)
 
 ;; company
 (require 'company)
@@ -158,5 +184,48 @@
 (setq projectile-completion-system 'helm)
 (setq projectile-indexing-method 'alien)
 
+(nyan-mode 1)
+
 ;; Package zygospore
 (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
+
+;---------------------------------------------------------------------
+;; Put auto 'custom' changes in a separate file (this is stuff like
+;; custom-set-faces and custom-set-variables)
+;;(load
+;;  (setq custom-file (expand-file-name "custom/setup-custom.el" user-emacs-directory))
+;;   'noerror)
+
+(set-face-attribute 'helm-selection nil :background "#441100")
+
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;;clang
+(require 'clang-format)
+(global-set-key [C-c-f] 'clang-format-region)
+
+;;google-style
+(require 'google-c-style)
+(add-hook 'c-mode-common-hook 'google-set-c-style)
+(add-hook 'c-mode-common-hook 'google-make-newline-indent)
+
+(eval-after-load 'flycheck
+  '(progn
+     (require 'flycheck-google-cpplint)
+     ;; Add Google C++ Style checker.
+     ;; In default, syntax checked by Clang and Cppcheck.
+     (flycheck-add-next-checker 'c/c++-clang
+                                'c/c++-googlelint 'append)))
+
+;;YCM server
+(require 'ycmd)
+(ycmd-setup)
+(set-variable 'ycmd-server-command '("python" "/home/zika/ycmd/ycmd/"))
+;;(set-variable 'ycmd-extra-conf-whitelist '("~/gem5/*"))
+(set-variable 'ycmd-request-message-level -1)
+(set-variable 'url-show-status nil)
+(require 'company-ycmd)
+(company-ycmd-setup)
+(require 'flycheck-ycmd)
+(flycheck-ycmd-setup)
