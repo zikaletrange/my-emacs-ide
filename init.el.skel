@@ -47,6 +47,8 @@
     volatile-highlights
     undo-tree
     zygospore
+    multiple-cursors
+    mc-extras
     magit))
 
 (defun install-packages ()
@@ -229,3 +231,27 @@
 (company-ycmd-setup)
 (require 'flycheck-ycmd)
 (flycheck-ycmd-setup)
+
+;;multiple-cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this) (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+ (define-key mc/keymap (kbd "C-. C-d") 'mc/remove-current-cursor)
+  (define-key mc/keymap (kbd "C-. d")   'mc/remove-duplicated-cursors)
+
+  (define-key mc/keymap (kbd "C-. =")   'mc/compare-chars)
+
+  ;; Emacs 24.4+ comes with rectangle-mark-mode.
+  (define-key rectangle-mark-mode-map (kbd "C-. C-,") 'mc/rect-rectangle-to-multiple-cursors)
+
+  (define-key cua--rectangle-keymap   (kbd "C-. C-,") 'mc/cua-rectangle-to-multiple-cursors)
+
+To enable interaction between multiple cursors and CUA rectangle
+copy & paste:
+
+  (mc/cua-rectangle-setup)
