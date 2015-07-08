@@ -246,12 +246,8 @@
 
   (define-key mc/keymap (kbd "C-. =")   'mc/compare-chars)
 
-  ;; Emacs 24.4+ comes with rectangle-mark-mode.
-  (define-key rectangle-mark-mode-map (kbd "C-. C-,") 'mc/rect-rectangle-to-multiple-cursors)
+;; Emacs 24.4+ comes with rectangle-mark-mode.
+(mc/cua-rectangle-setup)
+(define-key rectangle-mark-mode-map (kbd "C-. C-,") 'mc/rect-rectangle-to-multiple-cursors)
 
-  (define-key cua--rectangle-keymap   (kbd "C-. C-,") 'mc/cua-rectangle-to-multiple-cursors)
-
-To enable interaction between multiple cursors and CUA rectangle
-copy & paste:
-
-  (mc/cua-rectangle-setup)
+(define-key cua--rectangle-keymap   (kbd "C-. C-,") 'mc/cua-rectangle-to-multiple-cursors)
