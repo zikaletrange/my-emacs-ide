@@ -10,7 +10,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (defconst demo-packages
-  '(anzu
+  '(ag
+    anzu
     auctex
     auto-complete
     ein
@@ -27,11 +28,14 @@
     color-theme-solarized
     company
     company-ycmd
+    company-quickhelp
     duplicate-thing
     ggtags
     helm
     helm-gtags
     helm-projectile
+    helm-ag
+    helm-ag-r
     helm-swoop
     function-args
     clean-aindent-mode
@@ -61,6 +65,8 @@
       (package-install package))))
 
 (install-packages)
+
+(require 'ag)
 
 ;; this variables must be set before load helm-gtags
 ;; you can change to any prefix key of your choice
@@ -185,6 +191,13 @@
 (helm-projectile-on)
 (setq projectile-completion-system 'helm)
 (setq projectile-indexing-method 'alien)
+(require 'helm-ag)
+(require 'helm-ag-r)
+(defun projectile-helm-ag ()
+  (interactive)
+  (helm-ag (projectile-project-root)))
+(custom-set-variables
+ '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case --all-text"))
 
 (nyan-mode 1)
 
@@ -251,3 +264,6 @@
 (define-key rectangle-mark-mode-map (kbd "C-. C-,") 'mc/rect-rectangle-to-multiple-cursors)
 
 (define-key cua--rectangle-keymap   (kbd "C-. C-,") 'mc/cua-rectangle-to-multiple-cursors)
+
+;;Add doc popup for company
+(company-quickhelp-mode 1)

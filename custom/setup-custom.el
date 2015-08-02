@@ -5,6 +5,12 @@
   ;; If there is more than one, they won't work right.
   )
 
+;; invoker for style tools
+(defun clang-format-region()
+  "clang-format buffer"
+  (interactive)
+  (code-style "clang-format" "-style=\"{BasedOnStyle: llvm, IndentWidth: 8}\""))
+
 ; color theme
 (add-to-list 'custom-theme-load-path (make-plugin-path "color-theme-solarized"))
 (load-theme 'solarized t)
